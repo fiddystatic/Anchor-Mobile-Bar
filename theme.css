@@ -1,0 +1,72 @@
+/* ------------------- */
+/* Custom Properties   */
+/* ------------------- */
+:root {
+    --clr-primary: #0A2F51; /* Deep Navy Blue */
+    --clr-secondary: #B99D6B; /* Gold/Brass */
+    --clr-accent: #e4572e; /* A pop of color */
+    
+    /* Base Theme (Dark) */
+    --clr-bg: #121212;
+    --clr-surface: #1E1E1E;
+    --clr-text: #EAEAEA;
+    --clr-text-muted: #AAAAAA;
+    --clr-border: #333333;
+    --clr-white: #FFFFFF;
+    
+    --clr-overlay: rgba(0, 0, 0, 0.6);
+    --clr-surface-glass: rgba(30, 30, 30, 0.6);
+    --clr-surface-glass-border: rgba(51, 51, 51, 0.8);
+
+    --ff-heading: 'Playfair Display', serif;
+    --ff-body: 'Lato', sans-serif;
+
+    --header-height: 80px;
+    --side-nav-width: 250px; /* Used for mobile panel */
+    --mobile-header-height: 70px;
+    --transition-speed: 0.3s;
+}
+
+/* ------------------- */
+/* Theme Styling       */
+/* ------------------- */
+body {
+    transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+}
+
+.section-title,
+.service-title,
+.menu-card-title,
+.nav-links a {
+    color: var(--clr-secondary);
+}
+
+.service-card,
+.menu-card {
+    background-color: var(--clr-surface);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+#contact {
+    background-color: var(--clr-surface) !important;
+}
+
+.menu-card-list li::before {
+    opacity: 0.8;
+}
+
+.main-header,
+.site-footer,
+.mobile-nav-panel {
+    background-color: #1a1a1a;
+    border-bottom-color: var(--clr-border);
+}
+
+.nav-links a,
+.mobile-nav-toggle span {
+    color: var(--clr-text);
+}
+.nav-links a:hover, .nav-links a.active {
+     color: var(--clr-white);
+     background-color: var(--clr-secondary);
+}

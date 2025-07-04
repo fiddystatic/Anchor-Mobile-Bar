@@ -1,0 +1,63 @@
+/* ------------------- */
+/* Reset               */
+/* ------------------- */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body, h1, h2, h3, p, ul {
+    margin: 0;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+/* ------------------- */
+/* General Styling     */
+/* ------------------- */
+body {
+    font-family: var(--ff-body);
+    background-color: var(--clr-bg);
+    color: var(--clr-text);
+    line-height: 1.6;
+}
+
+main {
+    padding-top: var(--header-height);
+}
+
+.content-pusher {
+    margin-left: var(--side-nav-width);
+    transition: margin-left var(--transition-speed) ease;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.section-title {
+    font-family: var(--ff-heading);
+    color: var(--clr-primary);
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    text-align: center;
+    transition: color var(--transition-speed) ease;
+}
+
+/* --- TOMBSTONES: Code moved to other files --- */
+#get-quote-btn {
+  display: inline-block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}

@@ -1,0 +1,59 @@
+/* ------------------- */
+/* Responsive Design   */
+/* ------------------- */
+@media (max-width: 992px) {
+    main {
+        padding-top: var(--mobile-header-height);
+    }
+    
+    .main-header {
+        height: var(--mobile-header-height);
+    }
+
+    .main-nav, .header-controls {
+        display: none;
+    }
+
+    .mobile-nav-toggle {
+        display: block;
+    }
+    
+    .nav-open .mobile-nav-toggle span {
+         background-color: var(--clr-primary);
+    }
+    
+    .nav-open .mobile-nav-toggle span:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+    }
+    .nav-open .mobile-nav-toggle span:nth-child(2) {
+        opacity: 0;
+    }
+    .nav-open .mobile-nav-toggle span:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+    }
+
+    .hero-title {
+        font-size: 2.5rem;
+    }
+
+    .about-container {
+        flex-direction: column;
+    }
+
+    .about-content .section-title {
+        text-align: center;
+    }
+
+    .theme-notification {
+        bottom: 15px;
+        right: 15px;
+    }
+    .bartender-character {
+        width: 80px;
+    }
+    .notification-bubble {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+}
+
