@@ -23,6 +23,12 @@
     width: 100%;
 }
 
+.nav-controls-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
 .main-header .logo img {
     max-height: 50px;
     width: auto;
@@ -40,7 +46,7 @@
 
 .nav-links a {
     text-decoration: none;
-    color: var(--clr-primary);
+    color: var(--clr-text);
     font-weight: 700;
     position: relative;
     padding: 0.75rem 1rem;
@@ -102,13 +108,39 @@
     cursor: pointer;
     z-index: 1001;
     padding: 10px;
+    margin-left: 0.5rem;
+}
+
+.mobile-header-controls {
+    display: none;
+    align-items: center;
+    gap: 1.2rem;
+    margin-left: auto;
+    padding-right: 0.5rem; /* Add some spacing before the hamburger menu */
+}
+
+.mobile-header-controls .icon-btn {
+     width: 40px;
+     height: 40px;
+     padding: 0.5rem;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+}
+.mobile-header-controls .icon-btn img {
+    height: 24px;
+    width: 24px;
+}
+.mobile-header-controls .cart-toggle img {
+    height: 28px;
+    width: 28px;
 }
 
 .mobile-nav-toggle span {
     display: block;
     width: 25px;
     height: 3px;
-    background-color: var(--clr-primary);
+    background-color: var(--clr-secondary);
     margin: 5px 0;
     transition: all 0.3s ease;
 }
@@ -123,7 +155,7 @@
     border-right: 1px solid var(--clr-border);
     display: flex;
     flex-direction: column;
-    padding: calc(var(--header-height) + 2rem) 1.5rem 2rem;
+    padding: calc(var(--header-height) + 2rem) 1rem 2rem;
     z-index: 999;
     transition: left var(--transition-speed) ease-in-out, background-color var(--transition-speed) ease, border-color var(--transition-speed) ease;
 }
@@ -184,17 +216,18 @@
     border-top: 1px solid var(--clr-border);
     padding-top: 1.5rem;
     width: 100%;
+    min-height: 120px; 
 }
 
 .mobile-nav-controls {
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
     align-items: center;
-    margin-bottom: 1.5rem;
+    gap: 1.5rem;
 }
 
 .mobile-nav-footer .nav-btn {
-    width: 100%;
+    width: auto;
     text-align: center;
 }
 
@@ -253,9 +286,25 @@
 /* Footer              */
 /* ------------------- */
 .site-footer {
-    background-color: var(--clr-primary);
-    color: var(--clr-bg-light);
+    background-color: var(--clr-secondary);
+    color: var(--clr-primary);
     padding: 2rem 0;
     text-align: center;
     transition: background-color var(--transition-speed) ease;
+}
+
+.footer-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.footer-credit a {
+    color: var(--clr-primary);
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.footer-credit a:hover {
+    text-decoration: underline;
 }

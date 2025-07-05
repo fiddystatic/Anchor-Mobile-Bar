@@ -22,7 +22,7 @@
     --ff-body: 'Lato', sans-serif;
 
     --header-height: 80px;
-    --side-nav-width: 250px; /* Used for mobile panel */
+    --side-nav-width: 82px; /* Used for mobile panel */
     --mobile-header-height: 70px;
     --transition-speed: 0.3s;
 }

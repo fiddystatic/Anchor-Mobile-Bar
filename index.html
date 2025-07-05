@@ -13,6 +13,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 </head>
 <body>
 
@@ -21,20 +22,28 @@
             <a href="/" class="logo">
                 <img src="logo.png" alt="Anchor Mobile Bar Logo">
             </a>
-            <nav class="main-nav">
-                <ul class="nav-links">
-                    <li><a href="#hero">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#services">Services</a></li>
-                    <li><a href="#menu">Our Offerings</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </nav>
-            <div class="header-controls">
-                <button id="header-quote-btn" class="btn btn-secondary nav-btn">Get Quote</button>
-                <button id="cart-toggle" class="cart-toggle" aria-label="Toggle cart">
+            <div class="nav-controls-wrapper">
+                <nav class="main-nav">
+                    <ul class="nav-links">
+                        <li><a href="#hero">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#menu">Our Offerings</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </nav>
+                <div class="header-controls">
+                    <button id="header-quote-btn" class="btn btn-secondary nav-btn">Get Quote</button>
+                    <button id="cart-toggle" class="cart-toggle" aria-label="Toggle cart">
+                        <img src="cart-icon.png" alt="Shopping Cart">
+                        <span id="cart-count" class="cart-count">0</span>
+                    </button>
+                </div>
+            </div>
+            <div class="mobile-header-controls">
+                <button id="cart-toggle-mobile" class="cart-toggle" aria-label="Toggle cart">
                     <img src="cart-icon.png" alt="Shopping Cart">
-                    <span id="cart-count" class="cart-count">0</span>
+                    <span id="cart-count-mobile" class="cart-count">0</span>
                 </button>
             </div>
             <button class="mobile-nav-toggle" aria-label="Open navigation">
@@ -57,12 +66,8 @@
         </nav>
         <div class="mobile-nav-footer">
              <div class="mobile-nav-controls">
-                <button id="cart-toggle-mobile" class="cart-toggle" aria-label="Toggle cart">
-                    <img src="cart-icon.png" alt="Shopping Cart">
-                    <span id="cart-count-mobile" class="cart-count">0</span>
-                </button>
+                <button id="mobile-quote-btn" class="btn btn-secondary nav-btn icon-btn" aria-label="Get a Quote"><img src="icon-quote.png" alt="Get a Quote"></button>
              </div>
-             <button id="mobile-quote-btn" class="btn btn-secondary nav-btn icon-btn"><img src="icon-quote.png" alt="Get a Quote"></button>
         </div>
         <div id="mobile-nav-tooltip" class="mobile-nav-tooltip"></div>
     </aside>
@@ -87,19 +92,21 @@
                 <div id="delivery-address-container" class="form-group hidden-delivery-address">
                      <label for="delivery-address">Delivery Address</label>
                      <input type="text" id="delivery-address" name="delivery-address" placeholder="Enter your full address">
-                     <button id="use-map-btn" class="btn btn-secondary use-map-btn">Use Map</button>
+                     <button id="use-map-btn" class="btn btn-secondary use-map-btn">Select on Map</button>
                 </div>
             </div>
             <div class="payment-methods">
-                <p>Payment Method:</p>
-                <label>
-                    <input type="radio" name="payment" value="card" checked>
-                    Credit Card
-                </label>
-                <label>
-                    <input type="radio" name="payment" value="paypal">
-                    PayPal
-                </label>
+                <div class="form-group">
+                    <label for="payment-method">Payment Method:</label>
+                    <select id="payment-method" name="payment-method">
+                        <option value="swipe" selected="">Swipe (Credit/Debit Card)</option>
+                        <option value="ecocash">Ecocash</option>
+                        <option value="innbucks">Innbucks</option>
+                        <option value="omari">Omari</option>
+                        <option value="cash">Cash</option>
+                        <option value="zipit">Zipit</option>
+                    </select>
+                </div>
             </div>
             <div class="cart-total">
                 <span>Total:</span>
@@ -136,6 +143,21 @@
                 <h2 class="section-title">What We Do</h2>
                 <div class="services-grid">
                     <div class="service-card">
+                        <img src="service-weddings.png" alt="Weddings" class="service-icon">
+                        <h3 class="service-title">Weddings</h3>
+                        <p>Let us add a touch of class to your special day. Our elegant mobile bar is the perfect fit for any wedding celebration.</p>
+                    </div>
+                    <div class="service-card">
+                        <img src="service-parties.png" alt="Parties" class="service-icon">
+                        <h3 class="service-title">Private Parties</h3>
+                        <p>From birthdays to anniversaries, we bring the party to you with custom drink menus and a vibrant atmosphere.</p>
+                    </div>
+                    <div class="service-card">
+                        <img src="service-corporate.png" alt="Corporate Events" class="service-icon">
+                        <h3 class="service-title">Corporate Events</h3>
+                        <p>Impress your clients and colleagues with a sophisticated bar experience at your next corporate gathering or launch event.</p>
+                    </div>
+                    <div class="service-card">
                         <img src="service-bar-rental.png" alt="Mobile Bar Rental" class="service-icon">
                         <h3 class="service-title">Mobile Bar Rental</h3>
                         <p>Our stunning vintage trailer bar, delivered and set up at your location. The perfect centerpiece for any event.</p>
@@ -164,81 +186,8 @@
                 <h2 class="section-title">Our Offerings</h2>
                 <p class="text-lg text-gray-600 max-w-2xl mx-auto mb-12">We provide a comprehensive selection of beverages, snacks, and essentials to make your event complete. Add items to your cart to build your order.</p>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-8">
-                    <!-- Spirits & Liqueurs -->
-                    <div class="menu-card">
-                        <img src="menu-spirits.png" alt="Spirits and Liqueurs" class="menu-card-image">
-                        <div class="menu-card-content">
-                            <h3 class="menu-card-title">Spirits & Liqueurs</h3>
-                            <ul class="menu-card-list">
-                                <li data-item="Vodka" data-price="25.00"><span>Vodka</span> <button class="add-to-cart-btn">+</button></li>
-                                <li data-item="Gin" data-price="28.00"><span>Gin</span> <button class="add-to-cart-btn">+</button></li>
-                                <li data-item="Rum" data-price="22.00"><span>Rum</span> <button class="add-to-cart-btn">+</button></li>
-                                <li data-item="Tequila" data-price="30.00"><span>Tequila</span> <button class="add-to-cart-btn">+</button></li>
-                                <li data-item="Whiskey" data-price="35.00"><span>Whiskey</span> <button class="add-to-cart-btn">+</button></li>
-                            </ul>
-                        </div>
-                    </div>
-                     <!-- Beer, Wine & Cider -->
-                    <div class="menu-card">
-                        <img src="menu-beer-wine.png" alt="Beer, Wine & Cider" class="menu-card-image">
-                        <div class="menu-card-content">
-                            <h3 class="menu-card-title">Beer, Wine & Cider</h3>
-                            <ul class="menu-card-list">
-                                <li data-item="Craft Beer" data-price="8.00"><span>Craft Beer</span> <button class="add-to-cart-btn">+</button></li>
-                                <li data-item="Red Wine" data-price="18.00"><span>Red Wine</span> <button class="add-to-cart-btn">+</button></li>
-                                <li data-item="Artisanal Cider" data-price="9.00"><span>Artisanal Cider</span> <button class="add-to-cart-btn">+</button></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <!-- Mixers & Soft Drinks -->
-                    <div class="menu-card">
-                        <img src="menu-mixers.png" alt="Mixers & Soft Drinks" class="menu-card-image">
-                        <div class="menu-card-content">
-                            <h3 class="menu-card-title">Mixers & Soft Drinks</h3>
-                            <ul class="menu-card-list">
-                                <li data-item="Sodas" data-price="2.50"><span>Sodas</span> <button class="add-to-cart-btn">+</button></li>
-                                <li data-item="Premium Juices" data-price="4.00"><span>Premium Juices</span> <button class="add-to-cart-btn">+</button></li>
-                                <li data-item="Tonic Water" data-price="3.00"><span>Tonic Water</span> <button class="add-to-cart-btn">+</button></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <!-- Snacks -->
-                    <div class="menu-card">
-                        <img src="menu-snacks.png" alt="Gourmet Snacks" class="menu-card-image">
-                        <div class="menu-card-content">
-                            <h3 class="menu-card-title">Gourmet Snacks</h3>
-                            <ul class="menu-card-list">
-                                <li data-item="Biltong & Dry Wors" data-price="12.00"><span>Biltong & Dry Wors</span> <button class="add-to-cart-btn">+</button></li>
-                                <li data-item="Artisanal Chips" data-price="6.00"><span>Artisanal Chips</span> <button class="add-to-cart-btn">+</button></li>
-                                <li data-item="Gourmet Gummies" data-price="7.00"><span>Gourmet Gummies</span> <button class="add-to-cart-btn">+</button></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <!-- Tobacco & Alternatives -->
-                    <div class="menu-card">
-                         <img src="menu-tobacco.png" alt="Tobacco & Alternatives" class="menu-card-image">
-                         <div class="menu-card-content">
-                            <h3 class="menu-card-title">Tobacco & Alternatives</h3>
-                            <ul class="menu-card-list">
-                                <li data-item="Premium Cigars" data-price="15.00"><span>Premium Cigars</span> <button class="add-to-cart-btn">+</button></li>
-                                <li data-item="Vapes & E-Liquids" data-price="20.00"><span>Vapes & E-Liquids</span> <button class="add-to-cart-btn">+</button></li>
-                                <li data-item="Nicotine Pouches" data-price="8.00"><span>Nicotine Pouches</span> <button class="add-to-cart-btn">+</button></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <!-- Bar Essentials -->
-                    <div class="menu-card">
-                        <img src="menu-essentials.png" alt="Bar Essentials" class="menu-card-image">
-                        <div class="menu-card-content">
-                            <h3 class="menu-card-title">Bar Essentials</h3>
-                            <ul class="menu-card-list">
-                                <li data-item="Ice (Bag)" data-price="5.00"><span>Ice (Bag)</span> <button class="add-to-cart-btn">+</button></li>
-                                <li data-item="Quality Glassware" data-price="10.00"><span>Quality Glassware</span> <button class="add-to-cart-btn">+</button></li>
-                                <li data-item="Garnishes" data-price="5.00"><span>Garnishes</span> <button class="add-to-cart-btn">+</button></li>
-                            </ul>
-                        </div>
-                    </div>
+                <div id="menu-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-8">
+                    <!-- Menu cards will be dynamically inserted here by menu.js -->
                 </div>
             </div>
         </section>
@@ -330,6 +279,20 @@
         </div>
     </div>
     
+    <div id="map-modal" class="modal-overlay">
+        <div class="modal-content map-modal-content">
+            <button id="close-map-modal-btn" class="close-modal">&times;</button>
+            <h2 class="section-title">Select Delivery Location</h2>
+            <p>Search for your address or drag the marker to your location.</p>
+            <div class="map-search-container">
+                <input type="text" id="map-search-input" placeholder="Search for a location...">
+                <button id="map-search-btn" class="btn btn-secondary">Search</button>
+            </div>
+            <div id="map-container"></div>
+            <button id="confirm-location-btn" class="btn btn-secondary cta">Confirm Location</button>
+        </div>
+    </div>
+
     <div id="theme-notification" class="theme-notification">
         <img src="bartender-bottle.png" alt="Bartender Bottle Character" class="bartender-character">
         <div class="notification-bubble">
@@ -338,8 +301,9 @@
     </div>
 
     <footer class="site-footer">
-        <div class="container">
-            <p>&copy; 2024 Anchor Mobile Bar. All Rights Reserved.</p>
+        <div class="container footer-content">
+            <p>&copy; <span id="copyright-year">2024</span> Anchor Mobile Bar. All Rights Reserved.</p>
+            <p class="footer-credit">By <a href="https://fidelmudzamba.vercel.app" target="_blank" rel="noopener noreferrer">Fidel Mudzamba</a></p>
         </div>
     </footer>
 
@@ -348,7 +312,8 @@
         const importMap = {
             "imports": {
                 "gsap": "https://cdn.jsdelivr.net/npm/gsap@3.12.5/index.js",
-                "gsap/ScrollTrigger": "https://cdn.jsdelivr.net/npm/gsap@3.12.5/ScrollTrigger.js"
+                "gsap/ScrollTrigger": "https://cdn.jsdelivr.net/npm/gsap@3.12.5/ScrollTrigger.js",
+                "leaflet": "https://unpkg.com/leaflet@1.9.4/dist/leaflet-src.esm.js"
             }
         };
         const script = document.createElement('script');

@@ -18,7 +18,7 @@ function initModals(showNotification) {
 
     getQuoteBtn.addEventListener('click', openModal);
     headerQuoteBtn.addEventListener('click', openModal);
-    mobileQuoteBtn.addEventListener('click', openModal);
+    if(mobileQuoteBtn) mobileQuoteBtn.addEventListener('click', openModal);
     closeModalBtn.addEventListener('click', closeModal);
     quoteModal.addEventListener('click', (e) => {
         if(e.target === quoteModal) {

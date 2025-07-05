@@ -1,8 +1,10 @@
+import { initMapModal } from './map.js';
+
 function initCart(showNotification) {
     const cartToggleButtons = document.querySelectorAll('.cart-toggle');
     const closeCartButton = document.getElementById('close-cart');
     const cartSidebar = document.getElementById('cart-sidebar');
-    const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+    const menuGrid = document.getElementById('menu-grid');
     const cartItemsContainer = document.getElementById('cart-items');
     const cartCountEls = document.querySelectorAll('.cart-count');
     const cartTotalEl = document.getElementById('cart-total-price');
@@ -44,26 +46,32 @@ function initCart(showNotification) {
         source.start(0);
     };
 
+    // The mobile buttons are now in the header, not the side panel.
+    // cartToggleButtons now correctly selects all cart buttons.
     cartToggleButtons.forEach(button => {
         button.addEventListener('click', () => cartSidebar.classList.toggle('open'));
     });
     closeCartButton.addEventListener('click', () => cartSidebar.classList.remove('open'));
 
-    addToCartButtons.forEach(button => {
-        button.addEventListener('click', (e) => {
-            const listItem = e.target.closest('li');
-            const itemName = listItem.dataset.item;
-            const itemPrice = parseFloat(listItem.dataset.price);
-            
-            addItemToCart(itemName, itemPrice);
-            playSound(addToCartBuffer);
-            showNotification(`${itemName} added to cart!`);
+    // Event delegation for dynamically added menu items
+    if (menuGrid) {
+        menuGrid.addEventListener('click', (e) => {
+            const button = e.target.closest('.add-to-cart-btn');
+            if (button) {
+                const listItem = button.closest('li');
+                const itemName = listItem.dataset.item;
+                const itemPrice = parseFloat(listItem.dataset.price);
+                
+                addItemToCart(itemName, itemPrice);
+                playSound(addToCartBuffer);
+                showNotification(`${itemName} added to cart!`);
 
-            // Optional: visual feedback
-            button.style.transform = 'scale(1.2)';
-            setTimeout(() => button.style.transform = 'scale(1)', 200);
+                // Optional: visual feedback
+                button.style.transform = 'scale(1.2)';
+                setTimeout(() => button.style.transform = 'scale(1)', 200);
+            }
         });
-    });
+    }
 
     function addItemToCart(name, price) {
         const existingItem = cart.find(item => item.name === name);
@@ -127,19 +135,13 @@ function initCart(showNotification) {
     });
 
     deliveryCheckbox.addEventListener('change', () => {
-        deliveryAddressContainer.style.display = deliveryCheckbox.checked ? 'block' : 'none';
+        deliveryAddressContainer.classList.toggle('hidden-delivery-address', !deliveryCheckbox.checked);
         updateCartUI();
     });
 
     if (useMapBtn) {
-        useMapBtn.addEventListener('click', () => {
-            const address = deliveryAddressInput.value.trim();
-            if (address) {
-                const encodedAddress = encodeURIComponent(address);
-                window.open(`https://www.google.com/maps/search/?api=1&query=${encodedAddress}`, '_blank');
-            } else {
-                showNotification("Please enter a delivery address first.");
-            }
+        initMapModal((address) => {
+            deliveryAddressInput.value = address;
         });
     }
 
@@ -154,10 +156,17 @@ function initCart(showNotification) {
             return;
         }
         
+        const isDelivery = deliveryCheckbox.checked;
+        const successMessage = isDelivery 
+            ? "Payment Successful, Your Order is on the way"
+            : "Payment Complete";
+        
+        showNotification(successMessage);
+        
         console.log("Checkout complete. Cart:", cart);
         cart = [];
         deliveryCheckbox.checked = false;
-        deliveryAddressContainer.style.display = 'none';
+        deliveryAddressContainer.classList.add('hidden-delivery-address');
         deliveryAddressInput.value = '';
         updateCartUI();
         setTimeout(() => {

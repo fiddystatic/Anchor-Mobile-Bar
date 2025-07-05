@@ -30,17 +30,18 @@ function initAnimations() {
         }
     });
 
-    gsap.from('.menu-card', {
-        opacity: 0,
-        y: 50,
-        duration: 0.6,
-        stagger: 0.1,
-        ease: 'power3.out',
-        scrollTrigger: {
-            trigger: '.menu-section .grid',
-            start: 'top 85%',
-        }
-    });
+    // TOMBSTONE: Original menu card animation is now part of a function called after menu is built.
+    // gsap.from('.menu-card', {
+    //     opacity: 0,
+    //     y: 50,
+    //     duration: 0.6,
+    //     stagger: 0.1,
+    //     ease: 'power3.out',
+    //     scrollTrigger: {
+    //         trigger: '.menu-section .grid',
+    //         start: 'top 85%',
+    //     }
+    // });
 
     sectionsToAnimate.forEach(section => {
         gsap.from(section.selector, {
@@ -56,5 +57,18 @@ function initAnimations() {
     });
 }
 
-export { initAnimations };
+function animateMenuCards() {
+    gsap.from('.menu-card', {
+        opacity: 0,
+        y: 50,
+        duration: 0.6,
+        stagger: 0.1,
+        ease: 'power3.out',
+        scrollTrigger: {
+            trigger: '.menu-section .grid',
+            start: 'top 85%',
+        }
+    });
+}
 
+export { initAnimations, animateMenuCards };

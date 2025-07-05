@@ -30,14 +30,16 @@
 }
 
 .btn-secondary {
-    background-color: #1e293b;
-    color: #fff;
+    background-color: var(--clr-primary);
+    color: var(--clr-white);
+    border: 2px solid transparent;
 }
 
 .btn-secondary:hover,
 .btn-secondary:focus {
-    background-color: #334155;
-    color: #fff;
+    background-color: var(--clr-secondary);
+    color: var(--clr-primary);
+    border-color: var(--clr-primary);
 }
 
 .cta {
@@ -76,7 +78,7 @@
 
 .service-title {
     font-family: var(--ff-heading);
-    color: var(--clr-primary);
+    color: var(--clr-secondary);
     font-size: 1.5rem;
     margin-bottom: 0.5rem;
     transition: color var(--transition-speed) ease;
@@ -111,7 +113,7 @@
 
 .menu-card-title {
     font-family: var(--ff-heading);
-    color: var(--clr-primary);
+    color: var(--clr-secondary);
     font-size: 1.75rem;
     margin-bottom: 1rem;
     transition: color var(--transition-speed) ease;
@@ -133,11 +135,23 @@
     border-bottom: 1px solid var(--clr-border);
     transition: border-color var(--transition-speed) ease, color var(--transition-speed) ease;
 }
-.menu-card-list li span {
+.menu-card-list li .menu-item-name {
     padding-right: 1rem;
 }
 .menu-card-list li:last-child {
     border-bottom: none;
+}
+
+.menu-item-action {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.menu-item-price {
+    color: var(--clr-text-muted);
+    font-size: 0.9em;
+    font-weight: bold;
 }
 
 .add-to-cart-btn {
@@ -195,6 +209,10 @@
     padding: 0 10px;
 }
 
+.hidden-delivery-address {
+    display: none;
+}
+
 .delivery-option {
     margin-bottom: 1rem;
     padding: 0.75rem;
@@ -223,16 +241,47 @@
 .payment-methods {
     margin-bottom: 1rem;
 }
+
+.payment-methods .form-group {
+    margin-bottom: 0;
+}
+
 .payment-methods p {
     font-size: 1rem;
     font-weight: bold;
     margin-bottom: 0.5rem;
 }
+
 .payment-methods label {
-    display: block;
-    margin-bottom: 0.25rem;
-    font-size: 0.9rem;
+    font-weight: bold;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
 }
+
+.payment-methods select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--clr-border);
+    border-radius: 8px;
+    background-color: var(--clr-bg);
+    color: var(--clr-text);
+    transition: all var(--transition-speed) ease;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23AAAAAA' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.5rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5rem;
+}
+
+.payment-methods select:focus {
+    outline: none;
+    border-color: var(--clr-secondary);
+    box-shadow: 0 0 0 3px rgba(185, 157, 107, 0.3);
+}
+
 .cart-total {
     display: flex;
     justify-content: space-between;
@@ -247,6 +296,13 @@
     font-size: 1.1rem;
 }
 
+.btn-secondary.use-map-btn {
+    background-color: #1e293b;
+}
+
+.btn-secondary.use-map-btn:hover {
+    background-color: #334155;
+}
 
 /* ------------------- */
 /* Notification        */
@@ -300,7 +356,6 @@
     filter: drop-shadow(1px 2px 1px rgba(0,0,0,0.05));
 }
 
-
 /* ------------------- */
 /* Modal Styling (Forms) */
 /* ------------------- */
@@ -326,6 +381,28 @@
     opacity: 1;
     visibility: visible;
     transition: opacity 0.4s ease;
+}
+
+.map-modal-content {
+    max-width: 800px;
+}
+
+.map-container {
+    height: 40vh;
+    min-height: 300px;
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    background-color: var(--clr-border);
+}
+
+.map-search-container {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+.map-search-container input {
+    flex-grow: 1;
 }
 
 .modal-content {
@@ -426,6 +503,10 @@
     background-color: var(--clr-bg);
     color: var(--clr-text);
     transition: all var(--transition-speed) ease;
+}
+
+#map-search-input {
+    color: var(--clr-text);
 }
 
 .form-group input:focus,

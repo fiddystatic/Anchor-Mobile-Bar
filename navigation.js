@@ -20,24 +20,17 @@ function initNavigation() {
 
     // Mobile nav tooltips
     if (mobileNavTooltip) {
-        const mobileNavItemsWithTooltip = [
-            ...mobileNavLinks,
-            document.querySelector('#mobile-quote-btn')
-        ];
-
-        mobileNavItemsWithTooltip.forEach(item => {
-            const text = item.dataset.text || item.querySelector('img')?.alt;
-            if (!text) return;
-
-            item.addEventListener('mouseenter', (e) => {
+        mobileNavLinks.forEach(link => {
+            link.addEventListener('mouseenter', (e) => {
+                const text = link.dataset.text;
                 mobileNavTooltip.textContent = text;
                 mobileNavTooltip.style.display = 'block';
-                const itemRect = e.currentTarget.getBoundingClientRect();
+                const linkRect = e.currentTarget.getBoundingClientRect();
                 const panelRect = mobileNavPanel.getBoundingClientRect();
-                mobileNavTooltip.style.top = `${itemRect.top}px`;
+                mobileNavTooltip.style.top = `${linkRect.top}px`;
                 mobileNavTooltip.style.left = `${panelRect.right + 10}px`;
             });
-            item.addEventListener('mouseleave', () => {
+            link.addEventListener('mouseleave', () => {
                 mobileNavTooltip.style.display = 'none';
             });
         });

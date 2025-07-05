@@ -10,8 +10,16 @@
         height: var(--mobile-header-height);
     }
 
+    .nav-controls-wrapper {
+        display: none;
+    }
+
     .main-nav, .header-controls {
         display: none;
+    }
+
+    .mobile-header-controls {
+        display: flex;
     }
 
     .mobile-nav-toggle {
@@ -30,6 +38,13 @@
     }
     .nav-open .mobile-nav-toggle span:nth-child(3) {
         transform: translateY(-8px) rotate(-45deg);
+    }
+
+    .mobile-nav-footer .mobile-nav-controls {
+        display: flex; /* Make controls visible */
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
     }
 
     .hero-title {
@@ -56,4 +71,3 @@
         font-size: 0.9rem;
     }
 }
-
