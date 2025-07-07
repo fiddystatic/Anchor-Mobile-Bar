@@ -1,0 +1,94 @@
+<div id="quote-modal" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-decoration top-left"></div>
+        <div class="modal-decoration bottom-right"></div>
+        <button id="close-modal-btn" class="close-modal">&times;</button>
+        <h2 class="section-title">Get a Free Quote</h2>
+        <p>Fill out the form below and we'll get back to you shortly.</p>
+        <form id="quote-form">
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="event-type">Event Type</label>
+                <select id="event-type" name="event-type" required>
+                    <option value="">Select an option...</option>
+                    <option value="wedding">Wedding</option>
+                    <option value="corporate">Corporate Event</option>
+                    <option value="party">Private Party</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="event-date">Event Date</label>
+                <input type="date" id="event-date" name="event-date" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" rows="4" placeholder="Tell us a bit about your event..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-secondary cta">Send</button>
+        </form>
+        <div id="form-success-message" class="form-success-message">
+            Thank you! Your quote request has been sent. We'll be in touch soon.
+        </div>
+    </div>
+</div>
+
+<div id="email-modal" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-decoration top-left"></div>
+        <div class="modal-decoration bottom-right"></div>
+        <button id="close-email-modal-btn" class="close-modal">&times;</button>
+        <h2 class="section-title">Email Us</h2>
+        <p>Send us a message and we'll get back to you.</p>
+        <form id="email-form">
+            <div class="form-group">
+                <label for="email-name">Full Name</label>
+                <input type="text" id="email-name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email-address">Email Address</label>
+                <input type="email" id="email-address" name="email" required>
+            </div>
+             <div class="form-group">
+                <label for="email-subject">Subject</label>
+                <input type="text" id="email-subject" name="subject" required>
+            </div>
+            <div class="form-group">
+                <label for="email-message">Message</label>
+                <textarea id="email-message" name="message" rows="4" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-secondary cta">Send</button>
+        </form>
+         <div id="email-form-success-message" class="form-success-message">
+            Thank you! Your message has been sent. We'll be in touch soon.
+        </div>
+    </div>
+</div>
+
+<div id="map-modal" class="modal-overlay">
+    <div class="modal-content map-modal-content">
+        <button id="close-map-modal-btn" class="close-modal">&times;</button>
+        <h2 class="section-title">Select Delivery Location</h2>
+        <p>Search for your address or drag the marker to your location.</p>
+        <div class="map-search-container">
+            <input type="text" id="map-search-input" placeholder="Search for a location...">
+            <button id="map-search-btn" class="btn btn-secondary">Search</button>
+        </div>
+        <div id="map-container"></div>
+        <button id="confirm-location-btn" class="btn btn-secondary cta">Confirm Location</button>
+    </div>
+</div>
+
+<div id="theme-notification" class="theme-notification">
+    <img src="bartender-bottle.png" alt="Bartender Bottle Character" class="bartender-character">
+    <div class="notification-bubble">
+        <span id="notification-text"></span>
+    </div>
+</div>
