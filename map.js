@@ -1,31 +1,76 @@
 import * as L from 'leaflet';
 
+let googleMapsApiLoaded = false;
+let googleMapsApiLoading = false;
+const API_KEY = "AIzaSyBM8F2gXXiOXJQbW7JXPPtBI5KqPplrl3E"; // As provided by user
+
+function loadGoogleMapsApi() {
+    return new Promise((resolve, reject) => {
+        if (googleMapsApiLoaded) {
+            resolve();
+            return;
+        }
+        if (googleMapsApiLoading) {
+            // If already loading, wait for it to finish
+            const interval = setInterval(() => {
+                if (googleMapsApiLoaded) {
+                    clearInterval(interval);
+                    resolve();
+                }
+            }, 100);
+            return;
+        }
+        googleMapsApiLoading = true;
+        
+        window.initMap = () => {
+            googleMapsApiLoaded = true;
+            googleMapsApiLoading = false;
+            resolve();
+        };
+
+        const script = document.createElement('script');
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&libraries=places&callback=initMap`;
+        script.async = true;
+        script.defer = true;
+        script.onerror = () => {
+            googleMapsApiLoading = false;
+            reject(new Error('Failed to load Google Maps API.'));
+        };
+        document.head.appendChild(script);
+    });
+}
+
 function initMapModal(onLocationConfirm) {
     const useMapBtn = document.getElementById('use-map-btn');
     const mapModal = document.getElementById('map-modal');
     const closeMapModalBtn = document.getElementById('close-map-modal-btn');
     const mapContainer = document.getElementById('map-container');
-    const searchInput = document.getElementById('map-search-input');
-    const searchBtn = document.getElementById('map-search-btn');
     const confirmLocationBtn = document.getElementById('confirm-location-btn');
+    const selectedAddressDisplay = document.getElementById('selected-address-display');
 
     let map;
     let marker;
-    let geocodingDebounceTimer;
+    let geocoder;
+    let selectedAddress = '';
+    const harareCoords = { lat: -17.8252, lng: 31.0335 }; // Default to Harare, Zimbabwe
 
-    const harareCoords = [-17.8252, 31.0335]; // Default to Harare, Zimbabwe
-
-    function openModal() {
+    async function openModal() {
         mapModal.classList.add('open');
-        // Delay map initialization until the modal is visible to prevent sizing issues
-        setTimeout(() => {
-            if (!map) {
-                initializeMap();
-            } else {
-                map.invalidateSize();
-                askForLocation();
-            }
-        }, 150);
+        try {
+            await loadGoogleMapsApi();
+            // Delay map initialization until the modal is visible to prevent sizing issues
+            setTimeout(() => {
+                if (!map) {
+                    initializeMap();
+                } else {
+                    map.setCenter(harareCoords); // Recenter on open
+                    askForLocation();
+                }
+            }, 150);
+        } catch (error) {
+            console.error(error);
+            selectedAddressDisplay.textContent = "Could not load map.";
+        }
     }
 
     function closeModal() {
@@ -35,7 +80,7 @@ function initMapModal(onLocationConfirm) {
     function askForLocation() {
         if ('geolocation' in navigator) {
             navigator.geolocation.getCurrentPosition(position => {
-                const userLatLng = L.latLng(position.coords.latitude, position.coords.longitude);
+                const userLatLng = { lat: position.coords.latitude, lng: position.coords.longitude };
                 updateMarkerPosition(userLatLng, 15);
                 updateAddressFromMarker(userLatLng);
             }, () => {
@@ -51,87 +96,69 @@ function initMapModal(onLocationConfirm) {
     }
 
     function initializeMap() {
-        if (map) return;
+        if (map || !window.google) return;
         
-        map = L.map(mapContainer);
+        geocoder = new google.maps.Geocoder();
+        map = new google.maps.Map(mapContainer, {
+            center: harareCoords,
+            zoom: 13,
+            disableDefaultUI: true,
+            zoomControl: true,
+        });
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
-
-        marker = L.marker(harareCoords, {
+        marker = new google.maps.Marker({
+            position: harareCoords,
+            map: map,
             draggable: true
-        }).addTo(map);
+        });
         
         askForLocation();
 
-        marker.on('dragend', function(event) {
-            const position = marker.getLatLng();
+        marker.addListener('dragend', () => {
+            const position = marker.getPosition();
             updateAddressFromMarker(position);
         });
         
-        map.on('click', function(e) {
-            updateMarkerPosition(e.latlng);
-            updateAddressFromMarker(e.latlng);
+        map.addListener('click', (e) => {
+            updateMarkerPosition(e.latLng);
+            updateAddressFromMarker(e.latLng);
         });
     }
     
     function updateMarkerPosition(latlng, zoom) {
         if (!map || !marker) return;
-        marker.setLatLng(latlng);
+        marker.setPosition(latlng);
         if (zoom) {
-            map.setView(latlng, zoom);
-        } else {
-            map.panTo(latlng);
+            map.setZoom(zoom);
         }
+        map.setCenter(latlng);
     }
 
-    async function updateAddressFromMarker(latlng) {
-        clearTimeout(geocodingDebounceTimer);
-        geocodingDebounceTimer = setTimeout(async () => {
-            const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latlng.lat}&lon=${latlng.lng}`;
-            try {
-                const response = await fetch(url);
-                const data = await response.json();
-                if (data && data.display_name) {
-                    searchInput.value = data.display_name;
+    function updateAddressFromMarker(latlng) {
+        if (!geocoder) return;
+        selectedAddressDisplay.textContent = 'Fetching address...';
+        geocoder.geocode({ 'location': latlng }, (results, status) => {
+            if (status === 'OK') {
+                if (results[0]) {
+                    selectedAddress = results[0].formatted_address;
+                    selectedAddressDisplay.textContent = `Selected: ${selectedAddress}`;
+                } else {
+                    selectedAddress = '';
+                    selectedAddressDisplay.textContent = 'No address found for this location.';
                 }
-            } catch (error) {
-                console.error('Error reverse geocoding:', error);
-            }
-        }, 300); // Debounce to avoid too many requests while dragging
-    }
-
-
-    async function searchLocation() {
-        const query = searchInput.value;
-        if (!query) return;
-
-        const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}`;
-        
-        try {
-            const response = await fetch(url);
-            const data = await response.json();
-            if (data && data.length > 0) {
-                const { lat, lon } = data[0];
-                const newLatLng = L.latLng(lat, lon);
-                updateMarkerPosition(newLatLng, 15);
             } else {
-                alert('Location not found.');
+                selectedAddress = '';
+                selectedAddressDisplay.textContent = 'Geocoder failed due to: ' + status;
             }
-        } catch (error) {
-            console.error('Error fetching from Nominatim:', error);
-            alert('Could not perform search.');
-        }
+        });
     }
     
     function confirmLocation() {
-        const address = searchInput.value;
-        if(address){
-            onLocationConfirm(address);
+        if(selectedAddress){
+            onLocationConfirm(selectedAddress);
             closeModal();
         } else {
-            alert('Please select a location first.');
+            alert('Please select a valid location first.');
         }
     }
 
@@ -142,12 +169,6 @@ function initMapModal(onLocationConfirm) {
     mapModal.addEventListener('click', (e) => {
         if (e.target === mapModal) {
             closeModal();
-        }
-    });
-    searchBtn.addEventListener('click', searchLocation);
-    searchInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            searchLocation();
         }
     });
     confirmLocationBtn.addEventListener('click', confirmLocation);
