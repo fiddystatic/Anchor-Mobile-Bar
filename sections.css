@@ -26,7 +26,10 @@
     margin-bottom: 1rem;
     color: var(--clr-white);
 }
-
+.logo-text {
+    font-family: var(--ff-heading);
+    color: var(--clr-white);
+}
 .hero-subtitle {
     font-size: 1.25rem;
     margin-bottom: 2rem;
